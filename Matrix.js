@@ -15,13 +15,55 @@ const Matrix = (function(){
 
         for(let i = 0; i < n; i++) {
             for(let j = 0; j <n; j++) {
-                this.value[i][j] = Math.random();        
+                this.value[i][j] = Math.floor((Math.random() * 10));        
             }
         }
     }
 
     Matrix.prototype.print = function(){
         console.table(this.value);
+        console.log(getMin(this.value), getMax(this.value));
+    }
+
+    Matrix.prototype.normalize = function() {
+
+    }
+
+    function flat(m) {
+        let depth = 1;
+        return m.reduce( function(flat, toFlatten){
+            return flat.concat((Array.isArray(toFlatten) && (depth-1)) ? toFlatten.flat(depth-1) : toFlatten);
+        });
+    }
+
+    /**
+     * 
+     * @param {array[][]} m
+     * @returns smallest value of the array 
+     */
+    function getMin( m ) {
+        let smallest = 9999;
+        let flatened = flat( m );
+        for( let i = 0; i < flatened.length; i++) {
+            if( flatened[i] < smallest) smallest = flatened[i];
+        }
+
+        return smallest;
+    }
+
+    /**
+     * 
+     * @param {array[][]} m
+     * @returns biggest value of the array 
+     */
+    function getMax( m ) {
+        let biggest = -9999;
+        let flatened = flat( m );
+        for( let i = 0; i < flatened.length; i++) {
+            if( flatened[i] > biggest) biggest = flatened[i];
+        }
+
+        return biggest;
     }
 
     function static_fn() {
@@ -36,4 +78,6 @@ const Matrix = (function(){
 
 Matrix.print();
 var p = new Matrix.Matrix();
-
+p.init();
+p.create(3);
+p.print();
