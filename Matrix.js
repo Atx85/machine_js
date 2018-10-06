@@ -26,7 +26,17 @@ const Matrix = (function(){
     }
 
     Matrix.prototype.normalize = function() {
+        let arr = this.value.slice();
+        let min = getMin(this.value);
+        let max = getMax(this.value);
 
+        for(let i = 0; i < arr.length; i++) {
+            for(let j = 0; j < arr[i].length; j++) {
+                let val = arr[i][j];
+                arr[i][j] = ( val - min ) / ( max - min);
+            }
+        }
+        return arr;
     }
 
     function flat(m) {
@@ -76,8 +86,8 @@ const Matrix = (function(){
     }
 })();
 
-Matrix.print();
 var p = new Matrix.Matrix();
 p.init();
 p.create(3);
 p.print();
+console.table(p.normalize());
